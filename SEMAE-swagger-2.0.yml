@@ -1,0 +1,1271 @@
+#  ___ _            _ _    _ _    __
+# / __(_)_ __  _ __| (_)__(_) |_ /_/
+# \__ \ | '  \| '_ \ | / _| |  _/ -_)
+# |___/_|_|_|_| .__/_|_\__|_|\__\___|
+#             |_| Module: SEMAE 0.1
+basePath: /api
+paths:
+  /login:
+    get:
+      summary: Login (obtain bearer token)
+      security:
+      - basicAuth: []
+      produces:
+      - text/plain
+      - application/json
+      operationId: login
+      responses:
+        '200':
+          description: Successful login
+        '401':
+          schema:
+            $ref: '#/definitions/Error401'
+          description: Unauthorized
+      parameters:
+      - in: query
+        name: _output
+        description: Optional output format
+        type: string
+        required: false
+        enum:
+        - json
+        - oauth2
+        - token
+      tags:
+      - session
+  /logout:
+    get:
+      summary: Logout (revoke bearer token)
+      security:
+      - bearerAuth: []
+      produces:
+      - application/json
+      operationId: logout
+      responses:
+        '200':
+          description: Successfull logout
+        '401':
+          schema:
+            $ref: '#/definitions/Error401'
+          description: Unauthorized
+      tags:
+      - session
+  /rest/SemExternalColaborator:
+    get:
+      summary: Search SemExternalColaborator business object records or get contextualized
+        metadata
+      security:
+      - bearerAuth: []
+      produces:
+      - application/json
+      operationId: obj-semexternalcolaborator-search
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/ArrayOfSemExternalColaborator'
+          description: Success in searching business object records (or in getting
+            contextualized business object metadata, documentation, ...)
+        '401':
+          schema:
+            $ref: '#/definitions/Error401'
+          description: Unauthorized
+        '500':
+          schema:
+            $ref: '#/definitions/Error500'
+          description: Internal server error
+      parameters:
+      - in: query
+        name: _metadata
+        description: Metadata?
+        type: boolean
+        required: false
+      - in: query
+        name: _count
+        description: Count?
+        type: boolean
+        required: false
+      - in: query
+        name: _doc
+        description: Documentation?
+        type: boolean
+        required: false
+      - in: query
+        name: usr_image_id
+        description: Search filter for Picture
+        type: string
+        required: false
+      - in: query
+        name: usr_login
+        description: Search filter for Login
+        type: string
+        required: false
+      - in: query
+        name: usr_first_name
+        description: Search filter for First name
+        type: string
+        required: false
+      - in: query
+        name: usr_last_name
+        description: Search filter for Last name
+        type: string
+        required: false
+      - in: query
+        name: usr_lang
+        description: Search filter for Language
+        type: string
+        required: false
+        enum:
+        - ENU
+        - FRA
+      - in: query
+        name: usr_email
+        description: Search filter for Email address
+        type: string
+        required: false
+      - in: query
+        name: usr_cell_num
+        description: Search filter for Mobile/cellular phone number
+        type: string
+        required: false
+      - in: query
+        name: usr_active
+        description: Search filter for Active
+        type: string
+        required: false
+        enum:
+        - '0'
+        - '1'
+        - '2'
+        - '3'
+      - in: query
+        name: usr_home_id
+        description: Search filter for Home page
+        type: string
+        required: false
+      - in: query
+        name: usr_home_id__viw_name
+        description: Search filter for Home page Name
+        type: string
+        required: false
+      - in: query
+        name: row_module_id
+        description: Search filter for Module
+        type: string
+        required: false
+      - in: query
+        name: row_module_id__mdl_name
+        description: Search filter for Module name
+        type: string
+        required: false
+      tags:
+      - SemExternalColaborator
+  /rest/SemDeclaration:
+    get:
+      summary: Search SemDeclaration business object records or get contextualized
+        metadata
+      security:
+      - bearerAuth: []
+      produces:
+      - application/json
+      operationId: obj-semdeclaration-search
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/ArrayOfSemDeclaration'
+          description: Success in searching business object records (or in getting
+            contextualized business object metadata, documentation, ...)
+        '401':
+          schema:
+            $ref: '#/definitions/Error401'
+          description: Unauthorized
+        '500':
+          schema:
+            $ref: '#/definitions/Error500'
+          description: Internal server error
+      parameters:
+      - in: query
+        name: _metadata
+        description: Metadata?
+        type: boolean
+        required: false
+      - in: query
+        name: _count
+        description: Count?
+        type: boolean
+        required: false
+      - in: query
+        name: _doc
+        description: Documentation?
+        type: boolean
+        required: false
+      - in: query
+        name: semDeclarationIdentifier
+        description: Search filter for Identifier
+        type: string
+        required: false
+      - in: query
+        name: semDeclarationWeight
+        description: Search filter for Weight
+        type: string
+        required: false
+      - in: query
+        name: semDeclarationValidationStatus
+        description: Search filter for Status
+        type: string
+        required: false
+        enum:
+        - PEN
+        - VAL
+        - REJ
+      - in: query
+        name: semDeclarationComment
+        description: Search filter for Comment
+        type: string
+        required: false
+      tags:
+      - SemDeclaration
+  /rest/SemDeclaration/{row_id}:
+    post:
+      summary: Create a new SemDeclaration business object record
+      security:
+      - bearerAuth: []
+      produces:
+      - application/json
+      operationId: obj-semdeclaration-create
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/SemDeclaration'
+          description: Success in creating a new business object record
+        '400':
+          schema:
+            $ref: '#/definitions/Error400'
+          description: Bad request
+        '401':
+          schema:
+            $ref: '#/definitions/Error401'
+          description: Unauthorized
+        '500':
+          schema:
+            $ref: '#/definitions/Error500'
+          description: Internal server error
+      parameters:
+      - in: path
+        name: row_id
+        description: Row ID (or empty or _ for all row IDs)
+        type: string
+        required: true
+      - schema:
+          $ref: '#/definitions/SemDeclaration'
+        in: body
+        name: body
+      tags:
+      - SemDeclaration
+      consumes:
+      - application/json
+    get:
+      summary: Get a SemDeclaration business object record
+      security:
+      - bearerAuth: []
+      produces:
+      - application/json
+      operationId: obj-semdeclaration-get
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/SemDeclaration'
+          description: Success in getting a single business object record
+        '401':
+          schema:
+            $ref: '#/definitions/Error401'
+          description: Unauthorized
+        '500':
+          schema:
+            $ref: '#/definitions/Error500'
+          description: Internal server error
+        '404':
+          schema:
+            $ref: '#/definitions/Error404'
+          description: Not found
+      parameters:
+      - in: path
+        name: row_id
+        description: Row ID (or empty or _ for all row IDs)
+        type: string
+        required: true
+      - in: query
+        name: _inline_documents
+        description: Inline documents?
+        type: boolean
+        required: false
+      - in: query
+        name: _inline_thumbnails
+        description: Inline documents' thumbnails?
+        type: boolean
+        required: false
+      - in: query
+        name: _inline_objects
+        description: Inline objects?
+        type: boolean
+        required: false
+      tags:
+      - SemDeclaration
+    delete:
+      summary: Delete a SemDeclaration business object record
+      security:
+      - bearerAuth: []
+      produces:
+      - application/json
+      operationId: obj-semdeclaration-delete
+      responses:
+        '200':
+          description: Success in deleting a business object record
+        '400':
+          schema:
+            $ref: '#/definitions/Error400'
+          description: Bad request
+        '401':
+          schema:
+            $ref: '#/definitions/Error401'
+          description: Unauthorized
+        '500':
+          schema:
+            $ref: '#/definitions/Error500'
+          description: Internal server error
+        '404':
+          schema:
+            $ref: '#/definitions/Error404'
+          description: Not found
+      parameters:
+      - in: path
+        name: row_id
+        description: Row ID (or empty or _ for all row IDs)
+        type: string
+        required: true
+      tags:
+      - SemDeclaration
+    put:
+      summary: Update a SemDeclaration business object record
+      security:
+      - bearerAuth: []
+      produces:
+      - application/json
+      operationId: obj-semdeclaration-update
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/SemDeclaration'
+          description: Success in updating a business object record
+        '400':
+          schema:
+            $ref: '#/definitions/Error400'
+          description: Bad request
+        '401':
+          schema:
+            $ref: '#/definitions/Error401'
+          description: Unauthorized
+        '500':
+          schema:
+            $ref: '#/definitions/Error500'
+          description: Internal server error
+        '404':
+          schema:
+            $ref: '#/definitions/Error404'
+          description: Not found
+      parameters:
+      - in: path
+        name: row_id
+        description: Row ID (or empty or _ for all row IDs)
+        type: string
+        required: true
+      - schema:
+          $ref: '#/definitions/SemDeclaration'
+        in: body
+        name: body
+      tags:
+      - SemDeclaration
+      consumes:
+      - application/json
+  /rest/SemSpecies/{row_id}:
+    post:
+      summary: Create a new SemSpecies business object record
+      security:
+      - bearerAuth: []
+      produces:
+      - application/json
+      operationId: obj-semspecies-create
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/SemSpecies'
+          description: Success in creating a new business object record
+        '400':
+          schema:
+            $ref: '#/definitions/Error400'
+          description: Bad request
+        '401':
+          schema:
+            $ref: '#/definitions/Error401'
+          description: Unauthorized
+        '500':
+          schema:
+            $ref: '#/definitions/Error500'
+          description: Internal server error
+      parameters:
+      - in: path
+        name: row_id
+        description: Row ID (or empty or _ for all row IDs)
+        type: string
+        required: true
+      - schema:
+          $ref: '#/definitions/SemSpecies'
+        in: body
+        name: body
+      tags:
+      - SemSpecies
+      consumes:
+      - application/json
+    get:
+      summary: Get a SemSpecies business object record
+      security:
+      - bearerAuth: []
+      produces:
+      - application/json
+      operationId: obj-semspecies-get
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/SemSpecies'
+          description: Success in getting a single business object record
+        '401':
+          schema:
+            $ref: '#/definitions/Error401'
+          description: Unauthorized
+        '500':
+          schema:
+            $ref: '#/definitions/Error500'
+          description: Internal server error
+        '404':
+          schema:
+            $ref: '#/definitions/Error404'
+          description: Not found
+      parameters:
+      - in: path
+        name: row_id
+        description: Row ID (or empty or _ for all row IDs)
+        type: string
+        required: true
+      - in: query
+        name: _inline_documents
+        description: Inline documents?
+        type: boolean
+        required: false
+      - in: query
+        name: _inline_thumbnails
+        description: Inline documents' thumbnails?
+        type: boolean
+        required: false
+      - in: query
+        name: _inline_objects
+        description: Inline objects?
+        type: boolean
+        required: false
+      tags:
+      - SemSpecies
+    delete:
+      summary: Delete a SemSpecies business object record
+      security:
+      - bearerAuth: []
+      produces:
+      - application/json
+      operationId: obj-semspecies-delete
+      responses:
+        '200':
+          description: Success in deleting a business object record
+        '400':
+          schema:
+            $ref: '#/definitions/Error400'
+          description: Bad request
+        '401':
+          schema:
+            $ref: '#/definitions/Error401'
+          description: Unauthorized
+        '500':
+          schema:
+            $ref: '#/definitions/Error500'
+          description: Internal server error
+        '404':
+          schema:
+            $ref: '#/definitions/Error404'
+          description: Not found
+      parameters:
+      - in: path
+        name: row_id
+        description: Row ID (or empty or _ for all row IDs)
+        type: string
+        required: true
+      tags:
+      - SemSpecies
+    put:
+      summary: Update a SemSpecies business object record
+      security:
+      - bearerAuth: []
+      produces:
+      - application/json
+      operationId: obj-semspecies-update
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/SemSpecies'
+          description: Success in updating a business object record
+        '400':
+          schema:
+            $ref: '#/definitions/Error400'
+          description: Bad request
+        '401':
+          schema:
+            $ref: '#/definitions/Error401'
+          description: Unauthorized
+        '500':
+          schema:
+            $ref: '#/definitions/Error500'
+          description: Internal server error
+        '404':
+          schema:
+            $ref: '#/definitions/Error404'
+          description: Not found
+      parameters:
+      - in: path
+        name: row_id
+        description: Row ID (or empty or _ for all row IDs)
+        type: string
+        required: true
+      - schema:
+          $ref: '#/definitions/SemSpecies'
+        in: body
+        name: body
+      tags:
+      - SemSpecies
+      consumes:
+      - application/json
+  /rest/SemAccount/{row_id}:
+    post:
+      summary: Create a new SemAccount business object record
+      security:
+      - bearerAuth: []
+      produces:
+      - application/json
+      operationId: obj-semaccount-create
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/SemAccount'
+          description: Success in creating a new business object record
+        '400':
+          schema:
+            $ref: '#/definitions/Error400'
+          description: Bad request
+        '401':
+          schema:
+            $ref: '#/definitions/Error401'
+          description: Unauthorized
+        '500':
+          schema:
+            $ref: '#/definitions/Error500'
+          description: Internal server error
+      parameters:
+      - in: path
+        name: row_id
+        description: Row ID (or empty or _ for all row IDs)
+        type: string
+        required: true
+      - schema:
+          $ref: '#/definitions/SemAccount'
+        in: body
+        name: body
+      tags:
+      - SemAccount
+      consumes:
+      - application/json
+    get:
+      summary: Get a SemAccount business object record
+      security:
+      - bearerAuth: []
+      produces:
+      - application/json
+      operationId: obj-semaccount-get
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/SemAccount'
+          description: Success in getting a single business object record
+        '401':
+          schema:
+            $ref: '#/definitions/Error401'
+          description: Unauthorized
+        '500':
+          schema:
+            $ref: '#/definitions/Error500'
+          description: Internal server error
+        '404':
+          schema:
+            $ref: '#/definitions/Error404'
+          description: Not found
+      parameters:
+      - in: path
+        name: row_id
+        description: Row ID (or empty or _ for all row IDs)
+        type: string
+        required: true
+      - in: query
+        name: _inline_documents
+        description: Inline documents?
+        type: boolean
+        required: false
+      - in: query
+        name: _inline_thumbnails
+        description: Inline documents' thumbnails?
+        type: boolean
+        required: false
+      - in: query
+        name: _inline_objects
+        description: Inline objects?
+        type: boolean
+        required: false
+      tags:
+      - SemAccount
+    delete:
+      summary: Delete a SemAccount business object record
+      security:
+      - bearerAuth: []
+      produces:
+      - application/json
+      operationId: obj-semaccount-delete
+      responses:
+        '200':
+          description: Success in deleting a business object record
+        '400':
+          schema:
+            $ref: '#/definitions/Error400'
+          description: Bad request
+        '401':
+          schema:
+            $ref: '#/definitions/Error401'
+          description: Unauthorized
+        '500':
+          schema:
+            $ref: '#/definitions/Error500'
+          description: Internal server error
+        '404':
+          schema:
+            $ref: '#/definitions/Error404'
+          description: Not found
+      parameters:
+      - in: path
+        name: row_id
+        description: Row ID (or empty or _ for all row IDs)
+        type: string
+        required: true
+      tags:
+      - SemAccount
+    put:
+      summary: Update a SemAccount business object record
+      security:
+      - bearerAuth: []
+      produces:
+      - application/json
+      operationId: obj-semaccount-update
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/SemAccount'
+          description: Success in updating a business object record
+        '400':
+          schema:
+            $ref: '#/definitions/Error400'
+          description: Bad request
+        '401':
+          schema:
+            $ref: '#/definitions/Error401'
+          description: Unauthorized
+        '500':
+          schema:
+            $ref: '#/definitions/Error500'
+          description: Internal server error
+        '404':
+          schema:
+            $ref: '#/definitions/Error404'
+          description: Not found
+      parameters:
+      - in: path
+        name: row_id
+        description: Row ID (or empty or _ for all row IDs)
+        type: string
+        required: true
+      - schema:
+          $ref: '#/definitions/SemAccount'
+        in: body
+        name: body
+      tags:
+      - SemAccount
+      consumes:
+      - application/json
+  /rest/SemSpecies:
+    get:
+      summary: Search SemSpecies business object records or get contextualized metadata
+      security:
+      - bearerAuth: []
+      produces:
+      - application/json
+      operationId: obj-semspecies-search
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/ArrayOfSemSpecies'
+          description: Success in searching business object records (or in getting
+            contextualized business object metadata, documentation, ...)
+        '401':
+          schema:
+            $ref: '#/definitions/Error401'
+          description: Unauthorized
+        '500':
+          schema:
+            $ref: '#/definitions/Error500'
+          description: Internal server error
+      parameters:
+      - in: query
+        name: _metadata
+        description: Metadata?
+        type: boolean
+        required: false
+      - in: query
+        name: _count
+        description: Count?
+        type: boolean
+        required: false
+      - in: query
+        name: _doc
+        description: Documentation?
+        type: boolean
+        required: false
+      - in: query
+        name: semSpeciesKey
+        description: Search filter for ESPECE char(3) Clé unique
+        type: string
+        required: false
+      - in: query
+        name: semSpeciesLabel
+        description: Search filter for Label
+        type: string
+        required: false
+      tags:
+      - SemSpecies
+  /rest/SemExternalColaborator/{row_id}:
+    post:
+      summary: Create a new SemExternalColaborator business object record
+      security:
+      - bearerAuth: []
+      produces:
+      - application/json
+      operationId: obj-semexternalcolaborator-create
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/SemExternalColaborator'
+          description: Success in creating a new business object record
+        '400':
+          schema:
+            $ref: '#/definitions/Error400'
+          description: Bad request
+        '401':
+          schema:
+            $ref: '#/definitions/Error401'
+          description: Unauthorized
+        '500':
+          schema:
+            $ref: '#/definitions/Error500'
+          description: Internal server error
+      parameters:
+      - in: path
+        name: row_id
+        description: Row ID (or empty or _ for all row IDs)
+        type: string
+        required: true
+      - schema:
+          $ref: '#/definitions/SemExternalColaborator'
+        in: body
+        name: body
+      tags:
+      - SemExternalColaborator
+      consumes:
+      - application/json
+    get:
+      summary: Get a SemExternalColaborator business object record
+      security:
+      - bearerAuth: []
+      produces:
+      - application/json
+      operationId: obj-semexternalcolaborator-get
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/SemExternalColaborator'
+          description: Success in getting a single business object record
+        '401':
+          schema:
+            $ref: '#/definitions/Error401'
+          description: Unauthorized
+        '500':
+          schema:
+            $ref: '#/definitions/Error500'
+          description: Internal server error
+        '404':
+          schema:
+            $ref: '#/definitions/Error404'
+          description: Not found
+      parameters:
+      - in: path
+        name: row_id
+        description: Row ID (or empty or _ for all row IDs)
+        type: string
+        required: true
+      - in: query
+        name: _inline_documents
+        description: Inline documents?
+        type: boolean
+        required: false
+      - in: query
+        name: _inline_thumbnails
+        description: Inline documents' thumbnails?
+        type: boolean
+        required: false
+      - in: query
+        name: _inline_objects
+        description: Inline objects?
+        type: boolean
+        required: false
+      tags:
+      - SemExternalColaborator
+    delete:
+      summary: Delete a SemExternalColaborator business object record
+      security:
+      - bearerAuth: []
+      produces:
+      - application/json
+      operationId: obj-semexternalcolaborator-delete
+      responses:
+        '200':
+          description: Success in deleting a business object record
+        '400':
+          schema:
+            $ref: '#/definitions/Error400'
+          description: Bad request
+        '401':
+          schema:
+            $ref: '#/definitions/Error401'
+          description: Unauthorized
+        '500':
+          schema:
+            $ref: '#/definitions/Error500'
+          description: Internal server error
+        '404':
+          schema:
+            $ref: '#/definitions/Error404'
+          description: Not found
+      parameters:
+      - in: path
+        name: row_id
+        description: Row ID (or empty or _ for all row IDs)
+        type: string
+        required: true
+      tags:
+      - SemExternalColaborator
+    put:
+      summary: Update a SemExternalColaborator business object record
+      security:
+      - bearerAuth: []
+      produces:
+      - application/json
+      operationId: obj-semexternalcolaborator-update
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/SemExternalColaborator'
+          description: Success in updating a business object record
+        '400':
+          schema:
+            $ref: '#/definitions/Error400'
+          description: Bad request
+        '401':
+          schema:
+            $ref: '#/definitions/Error401'
+          description: Unauthorized
+        '500':
+          schema:
+            $ref: '#/definitions/Error500'
+          description: Internal server error
+        '404':
+          schema:
+            $ref: '#/definitions/Error404'
+          description: Not found
+      parameters:
+      - in: path
+        name: row_id
+        description: Row ID (or empty or _ for all row IDs)
+        type: string
+        required: true
+      - schema:
+          $ref: '#/definitions/SemExternalColaborator'
+        in: body
+        name: body
+      tags:
+      - SemExternalColaborator
+      consumes:
+      - application/json
+  /rest/SemAccount:
+    get:
+      summary: Search SemAccount business object records or get contextualized metadata
+      security:
+      - bearerAuth: []
+      produces:
+      - application/json
+      operationId: obj-semaccount-search
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/ArrayOfSemAccount'
+          description: Success in searching business object records (or in getting
+            contextualized business object metadata, documentation, ...)
+        '401':
+          schema:
+            $ref: '#/definitions/Error401'
+          description: Unauthorized
+        '500':
+          schema:
+            $ref: '#/definitions/Error500'
+          description: Internal server error
+      parameters:
+      - in: query
+        name: _metadata
+        description: Metadata?
+        type: boolean
+        required: false
+      - in: query
+        name: _count
+        description: Count?
+        type: boolean
+        required: false
+      - in: query
+        name: _doc
+        description: Documentation?
+        type: boolean
+        required: false
+      - in: query
+        name: semAccExternalIdentifier
+        description: Search filter for NRID decimal(15,0) Identifiant unique (interne
+          au CRM)
+        type: string
+        required: false
+      - in: query
+        name: semAccClientNumber
+        description: Search filter for CD varchar(50) N° de client
+        type: string
+        required: false
+      - in: query
+        name: semAccSoc
+        description: Search filter for VAR2 varchar(30) n° SOC
+        type: string
+        required: false
+      - in: query
+        name: semAccAe
+        description: Search filter for AE Number
+        type: string
+        required: false
+      - in: query
+        name: semAccCorporateName
+        description: Search filter for SOCIETE varchar(50) Raison sociale
+        type: string
+        required: false
+      tags:
+      - SemAccount
+  /:
+    get:
+      summary: Get user session information
+      security:
+      - bearerAuth: []
+      produces:
+      - application/json
+      operationId: info
+      responses:
+        '200':
+          description: Success in getting user session information
+        '401':
+          schema:
+            $ref: '#/definitions/Error401'
+          description: Unauthorized
+      parameters:
+      - in: query
+        name: texts
+        description: Texts?
+        type: boolean
+        required: false
+      tags:
+      - session
+securityDefinitions:
+  basicAuth:
+    type: basic
+  bearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+definitions:
+  Error404:
+    type: object
+    properties:
+      error:
+        description: Error message
+        type: string
+      status:
+        description: Error status
+        type: integer
+        enum:
+        - 404
+  SemDeclaration:
+    type: object
+    properties:
+      semDeclarationWeight:
+        description: Weight
+        type: string
+      semDeclarationValidationStatus:
+        description: Status
+        type: string
+        enum:
+        - PEN
+        - VAL
+        - REJ
+      semDeclarationComment:
+        description: Comment
+        type: string
+      row_id:
+        description: Unique technical row ID
+        type: string
+      semDeclarationIdentifier:
+        description: Identifier
+        type: string
+  SemAccount:
+    type: object
+    properties:
+      semAccClientNumber:
+        description: CD varchar(50) N° de client
+        type: string
+      semAccAe:
+        description: AE Number
+        type: string
+      semAccSoc:
+        description: VAR2 varchar(30) n° SOC
+        type: string
+      semAccCorporateName:
+        description: SOCIETE varchar(50) Raison sociale
+        type: string
+      row_id:
+        description: Unique technical row ID
+        type: string
+      semAccExternalIdentifier:
+        description: NRID decimal(15,0) Identifiant unique (interne au CRM)
+        type: string
+  ArrayOfSemDeclaration:
+    type: array
+    items:
+      $ref: '#/definitions/SemDeclaration'
+  PublicationResult:
+    type: object
+    properties:
+      mime:
+        description: MIME type
+        type: string
+      content:
+        description: Content (plain text or base64 encoded)
+        type: string
+  PlaceData:
+    type: object
+    properties:
+      coord:
+        description: Geographical coordinates
+        type: string
+      address:
+        description: Address
+        type: string
+      row_id:
+        description: Row ID
+        type: string
+      label1:
+        description: 'Label #1'
+        type: string
+      label2:
+        description: 'Label #2'
+        type: string
+      label3:
+        description: 'Label #3'
+        type: string
+  ArrayOfSemAccount:
+    type: array
+    items:
+      $ref: '#/definitions/SemAccount'
+  PlaceMapData:
+    type: object
+    properties:
+      places:
+        description: Places
+        type: array
+        items:
+          $ref: '#/definitions/PlaceData'
+      name:
+        description: Name
+        type: string
+  SemSpecies:
+    type: object
+    properties:
+      row_id:
+        description: Unique technical row ID
+        type: string
+      semSpeciesKey:
+        description: ESPECE char(3) Clé unique
+        type: string
+      semSpeciesLabel:
+        description: Label
+        type: string
+  ActionResult:
+    type: object
+    properties:
+      result:
+        description: Action result
+        type: string
+  ArrayOfSemExternalColaborator:
+    type: array
+    items:
+      $ref: '#/definitions/SemExternalColaborator'
+  ArrayOfSemSpecies:
+    type: array
+    items:
+      $ref: '#/definitions/SemSpecies'
+  TreeviewData:
+    type: object
+    properties:
+      item:
+        description: Object item with lists of linked objects' items
+        type: object
+  SemExternalColaborator:
+    type: object
+    properties:
+      row_module_id__mdl_name:
+        description: Module name
+        type: string
+      usr_image_id:
+        description: Picture
+        type: object
+      usr_email:
+        description: Email address
+        type: string
+      usr_active:
+        description: Active
+        type: string
+        enum:
+        - '0'
+        - '1'
+        - '2'
+        - '3'
+      row_module_id:
+        description: Module
+        type: string
+      usr_login:
+        description: Login
+        type: string
+      usr_home_id__viw_name:
+        description: Home page Name
+        type: string
+      usr_last_name:
+        description: Last name
+        type: string
+      usr_cell_num:
+        description: Mobile/cellular phone number
+        type: string
+      usr_lang:
+        description: Language
+        type: string
+        enum:
+        - ENU
+        - FRA
+      row_id:
+        description: Unique technical row ID
+        type: string
+      usr_home_id:
+        description: Home page
+        type: string
+      usr_first_name:
+        description: First name
+        type: string
+  Error400:
+    type: object
+    properties:
+      error:
+        description: Error message
+        type: string
+      status:
+        description: Error status
+        type: integer
+        enum:
+        - 400
+  Error401:
+    type: object
+    properties:
+      error:
+        description: Error message
+        type: string
+      status:
+        description: Error status
+        type: integer
+        enum:
+        - 401
+  Error500:
+    type: object
+    properties:
+      error:
+        description: Error message
+        type: string
+      status:
+        description: Error status
+        type: integer
+        enum:
+        - 500
+  Error403:
+    type: object
+    properties:
+      error:
+        description: Error message
+        type: string
+      status:
+        description: Error status
+        type: integer
+        enum:
+        - 403
+swagger: '2.0'
+info:
+  license:
+    name: Simplicite license
+    url: http://www.simplicitesoftware.com
+  contact:
+    name: Simplicite Software
+    url: http://www.simplicitesoftware.com
+    email: contact@simplicitesoftware.com
+  description: API for module SEMAE
+  title: SEMAE
+  version: '0.1'
+tags:
+- name: SemAccount
+  description: Account
+- name: SemDeclaration
+  description: Declaration
+- name: SemExternalColaborator
+  description: External colaborator
+- name: SemSpecies
+  description: Species

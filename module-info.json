@@ -1,0 +1,9 @@
+{
+    "date": "2023-06-08 18:18:45",
+    "name": "SEMAE",
+    "format": "json",
+    "files": ["SEMAE.json"],
+    "repository": {"origin": {"uri": "https://github.com/simplicitesoftware/module-semae.git"}},
+    "version": "0.1",
+    "platform": "5.3.4"
+}
